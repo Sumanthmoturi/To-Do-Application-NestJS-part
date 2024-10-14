@@ -6,8 +6,7 @@ export class UsersService {
   private users = [];
 
   create(createUserDto: CreateUserDto) {
-    const userExists = this.users.find(user => user.mobile === createUserDto.mobile);
-    if (userExists) {
+    if (this.users.find(u => u.mobile === createUserDto.mobile)) {
       throw new Error('User already exists');
     }
     this.users.push(createUserDto);
@@ -16,9 +15,7 @@ export class UsersService {
 
   login(mobile: string, password: string) {
     const user = this.users.find(u => u.mobile === mobile && u.password === password);
-    if (!user) {
-      throw new NotFoundException('Invalid credentials');
-    }
+    if (!user) throw new NotFoundException('Invalid credentials');
     return { message: 'Login successful', user };
   }
 }
